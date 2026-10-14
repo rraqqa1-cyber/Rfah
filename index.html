@@ -347,8 +347,6 @@
     .gallery-strip .gallery-item { flex:0 0 clamp(220px,28vw,320px); scroll-snap-align:center; transition:transform .5s,opacity .5s; }
     .gallery-strip .gallery-item[hidden] { display:none!important; }
     .gallery-strip .gallery-image-button { aspect-ratio:4 / 5!important; border-radius:6px; box-shadow:0 14px 35px #6b4f2422; }
-    .gallery-item.featured .gallery-image-button { box-shadow:0 0 0 3px #fffdfa,0 0 0 5px #c9a86a,0 18px 40px #6b4f2433; }
-    .gallery-item.featured .gi-tag { background:linear-gradient(120deg,#b08a45,#8a6630); }
     .gi-tag { position:absolute; z-index:3; top:12px; right:12px; padding:3px 11px; border-radius:20px; font:12px 'Reem Kufi',sans-serif; color:#fffdfa; background:#3a2e1f99; backdrop-filter:blur(6px); }
     .gc-arrow { position:absolute; z-index:5; top:44%; width:46px; height:46px; display:grid; place-items:center; border-radius:50%; background:#fffdfaee; border:1px solid #dcc8a2; color:var(--gold-dark); box-shadow:0 6px 18px #0001; }
     .gc-prev { right:-8px; } .gc-next { left:-8px; }
@@ -396,6 +394,8 @@
     .gb-card time { display:block; margin-top:8px; font-size:11px; color:var(--muted); }
     @keyframes card-in { from { opacity:0; transform:translateY(30px) scale(.9); } }
     .gb-note { grid-column:1 / -1; text-align:center; font-size:12px; color:var(--muted); }
+    .gb-mode { margin-top:18px; font-size:12px; color:var(--muted); }
+    .gb-mode:empty { display:none; }
     /* ===== Share ===== */
     .share-end { text-align:center; background:#fffdfa; }
     .share-buttons { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:26px; }
@@ -648,18 +648,19 @@
           <div class="gallery-carousel reveal">
             <button class="gc-arrow gc-prev" id="gcPrev" type="button" aria-label="الصور السابقة"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
             <div class="gallery-grid gallery-strip" id="galleryGrid" tabindex="0" aria-label="معرض صور التخرج، يتحرك تلقائياً">
-              <figure class="gallery-item featured" data-cat="rafah"><button class="gallery-image-button" type="button" data-photo="0" aria-label="تكبير صورة رفاه في يوم تخرجها"><img src="https://cdn.phototourl.com/member/2026-10-14-8cf5132b-9712-40ad-88d0-9bbdcf699698.jpg" alt="رفاه محمد الطاهي في يوم تخرجها" fetchpriority="high"><span class="gi-tag">رفاه 🎓</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">رفاه في يوم التخرج</figcaption></figure>
-              <figure class="gallery-item" data-cat="rafah"><button class="gallery-image-button" type="button" data-photo="1" aria-label="تكبير صورة درع رفاه في حفل التخرج"><img src="https://cdn.phototourl.com/member/2026-10-14-198640b5-ea2d-4c56-b370-ec9380ef3793.jpg" alt="رفاه تحمل درع تخرجها في قاعة الحفل" loading="lazy"><span class="gi-tag">رفاه</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">لحظة استلام الدرع</figcaption></figure>
-              <figure class="gallery-item" data-cat="rafah"><button class="gallery-image-button" type="button" data-photo="2" aria-label="تكبير صورة درع تخرج رفاه"><img src="https://cdn.phototourl.com/member/2026-10-14-c8a81b0f-ff6e-49e9-b3ea-679e09121ca3.png" alt="درع تخرج رفاه محمد الطاهي" loading="lazy"><span class="gi-tag">رفاه</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">ثمرةُ سنواتٍ من الإصرار</figcaption></figure>
-              <figure class="gallery-item" data-cat="campus"><button class="gallery-image-button" type="button" data-photo="3" aria-label="تكبير صورة جامعة رفاه"><img src="https://cdn.phototourl.com/member/2026-10-14-e974b681-8ecf-4f89-8d9a-b176d29e7fe9.jpg" alt="الجامعة التي تخرجت منها رفاه" loading="lazy"><span class="gi-tag">الجامعة</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">حيث بدأ الحلم</figcaption></figure>
-              <figure class="gallery-item" data-cat="ceremony"><button class="gallery-image-button" type="button" data-photo="4" aria-label="تكبير صورة احتفال الخريجين"><img src="https://images.pexels.com/photos/8093032/pexels-photo-8093032.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800" alt="خريجون يرفعون قبعاتهم احتفالاً عند الغروب" loading="lazy"><span class="gi-tag">حفل التخرج</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">وللفرح، سماءٌ أوسع</figcaption></figure>
-              <figure class="gallery-item" data-cat="ceremony"><button class="gallery-image-button" type="button" data-photo="5" aria-label="تكبير صورة رمي القبعات"><img src="https://images.pexels.com/photos/37296595/pexels-photo-37296595.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800" alt="خريجون يرمون قبعاتهم في قاعة الحفل" loading="lazy"><span class="gi-tag">حفل التخرج</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">قبعاتٌ في السماء</figcaption></figure>
+              <figure class="gallery-item" data-cat="rafah"><button class="gallery-image-button" type="button" data-photo="0" aria-label="تكبير صورة رفاه"><img src="https://cdn.phototourl.com/member/2026-10-14-8cf5132b-9712-40ad-88d0-9bbdcf699698.jpg" alt="رفاه محمد الطاهي في يوم تخرجها" loading="lazy"><span class="gi-tag">رفاه</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">رفاه… خريجة التخدير والإنعاش</figcaption></figure>
+              <figure class="gallery-item" data-cat="rafah"><button class="gallery-image-button" type="button" data-photo="0" aria-label="تكبير صورة درع رفاه في حفل التخرج"><img src="https://cdn.phototourl.com/member/2026-10-14-198640b5-ea2d-4c56-b370-ec9380ef3793.jpg" alt="رفاه تحمل درع تخرجها في قاعة الحفل" loading="lazy"><span class="gi-tag">رفاه</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">لحظة استلام الدرع</figcaption></figure>
+              <figure class="gallery-item" data-cat="rafah"><button class="gallery-image-button" type="button" data-photo="1" aria-label="تكبير صورة درع تخرج رفاه"><img src="https://cdn.phototourl.com/member/2026-10-14-c8a81b0f-ff6e-49e9-b3ea-679e09121ca3.png" alt="درع تخرج رفاه محمد الطاهي" loading="lazy"><span class="gi-tag">رفاه</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">ثمرةُ سنواتٍ من الإصرار</figcaption></figure>
+              <figure class="gallery-item" data-cat="ceremony"><button class="gallery-image-button" type="button" data-photo="2" aria-label="تكبير صورة احتفال الخريجين"><img src="https://images.pexels.com/photos/8093032/pexels-photo-8093032.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800" alt="خريجون يرفعون قبعاتهم احتفالاً عند الغروب" loading="lazy"><span class="gi-tag">حفل التخرج</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">وللفرح، سماءٌ أوسع</figcaption></figure>
+              <figure class="gallery-item" data-cat="ceremony"><button class="gallery-image-button" type="button" data-photo="3" aria-label="تكبير صورة رمي القبعات"><img src="https://images.pexels.com/photos/37296595/pexels-photo-37296595.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800" alt="خريجون يرمون قبعاتهم في قاعة الحفل" loading="lazy"><span class="gi-tag">حفل التخرج</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">قبعاتٌ في السماء</figcaption></figure>
+              <figure class="gallery-item" data-cat="campus"><button class="gallery-image-button" type="button" data-photo="4" aria-label="تكبير صورة جامعة رفاه"><img src="https://cdn.phototourl.com/member/2026-10-14-e974b681-8ecf-4f89-8d9a-b176d29e7fe9.jpg" alt="المعهد الذي درست فيه رفاه" loading="lazy"><span class="gi-tag">الجامعة</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">حيث بدأ الحلم</figcaption></figure>
+              <figure class="gallery-item" data-cat="campus"><button class="gallery-image-button" type="button" data-photo="5" aria-label="تكبير صورة قبعة التخرج والشهادة"><img src="https://images.pexels.com/photos/17484327/pexels-photo-17484327.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800" alt="قبعة تخرج وشهادة في حديقة" loading="lazy"><span class="gi-tag">الجامعة</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">قبعةٌ تحمل حلماً</figcaption></figure>
               <figure class="gallery-item" data-cat="family"><button class="gallery-image-button" type="button" data-photo="6" aria-label="تكبير صورة صديقات يحتفلن"><img src="https://images.pexels.com/photos/8106659/pexels-photo-8106659.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800" alt="صديقات يحتفلن بالتخرج وسط القصاصات" loading="lazy"><span class="gi-tag">الصديقات</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">فرحةٌ تكبر بالأحبة</figcaption></figure>
               <figure class="gallery-item" data-cat="family"><button class="gallery-image-button" type="button" data-photo="7" aria-label="تكبير صورة خريجتين بالورود"><img src="https://images.pexels.com/photos/30079720/pexels-photo-30079720.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=800" alt="خريجتان تحملان الورود والشهادات" loading="lazy"><span class="gi-tag">الأهل</span><span class="image-expand"><svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></span></button><figcaption class="gallery-caption">ورودٌ لأجمل يوم</figcaption></figure>
             </div>
             <button class="gc-arrow gc-next" id="gcNext" type="button" aria-label="الصور التالية"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg></button>
           </div>
-          <p class="gallery-note">صور «رفاه» و«الجامعة» حقيقية، أما صور الحفل والأهل فرمزية إلى حين إضافة صورها الخاصة.</p>
+          <p class="gallery-note">صور «رفاه» و«الجامعة» حقيقية، وصور الحفل والأهل رمزية إلى حين إضافة صورها الخاصة.</p>
         </div>
       </section>
       <div class="section-divider" aria-hidden="true"><svg><use href="#i-cap"/></svg><svg><use href="#i-cap"/></svg><svg><use href="#i-cap"/></svg></div>
@@ -699,6 +700,7 @@
             <div class="gb-actions"><button class="button button-primary" type="submit">إرسال التهنئة 🤍</button><button class="button button-outline" type="button" id="gbCancel">إلغاء</button></div>
           </form>
           <div class="gb-wall" id="gbWall" aria-live="polite"></div>
+          <p class="gb-mode" id="gbMode"></p>
         </div>
       </section>
       <section class="share-end section" id="share" aria-labelledby="shareTitle">
@@ -729,7 +731,7 @@
           <div class="credit-block"><svg class="credit-emblem" aria-hidden="true"><use href="#graduate-emblem"/></svg><p class="eyebrow">بكل فخر ومحبة، نحتفل بتخرّج</p><h2 class="credit-name">رفاه محمد الطاهي</h2><p class="credit-specialty">خريجة اختصاص التخدير والإنعاش</p><div class="ornament" aria-hidden="true"><svg class="icon"><use href="#i-sparkle"/></svg></div></div>
           <div class="credit-block"><p class="credit-quote"><span>وبعد سنواتٍ من التعب والسهر…</span><span>جاء يوم الحصاد</span></p><p class="credit-copy">لم يكن الطريق سهلاً،<br>لكن الحلم كان يستحق.</p></div>
           <div class="credit-block"><p class="eyebrow">إلى رفاه، بكل الحب</p><h3 class="credit-title">ألف مبارك التخرج 🎓</h3><p class="credit-copy"><span>اليوم ليس يوماً عادياً…</span><span>اليوم ثمرة سنوات من التعب</span><span>والسهر والاجتهاد.</span><span>ألف مبارك لكِ يا رفاه،</span><span>ومنها للأعلى دائماً.</span></p><div class="ornament" aria-hidden="true"><svg class="icon"><use href="#i-heart"/></svg></div></div>
-          <div class="credit-block"><p class="eyebrow">احتفالٌ بالإنجاز</p><h3 class="credit-title">لحظاتٌ تُشبه الفرح</h3><figure class="credit-photo"><img class="portrait" src="https://cdn.phototourl.com/member/2026-10-14-8cf5132b-9712-40ad-88d0-9bbdcf699698.jpg" alt="رفاه محمد الطاهي في يوم تخرجها"><figcaption>رفاه في يوم التخرج 🎓</figcaption></figure><figure class="credit-photo"><img src="https://cdn.phototourl.com/member/2026-10-14-e974b681-8ecf-4f89-8d9a-b176d29e7fe9.jpg" alt="الجامعة التي تخرجت منها رفاه"><figcaption>حيث بدأ الحلم</figcaption></figure><figure class="credit-photo"><img class="portrait" src="https://cdn.phototourl.com/member/2026-10-14-c8a81b0f-ff6e-49e9-b3ea-679e09121ca3.png" alt="درع تخرج رفاه محمد الطاهي"><figcaption>ثمرةُ سنواتٍ من الإصرار</figcaption></figure></div>
+          <div class="credit-block"><p class="eyebrow">احتفالٌ بالإنجاز</p><h3 class="credit-title">لحظاتٌ تُشبه الفرح</h3><figure class="credit-photo"><img class="portrait" src="https://cdn.phototourl.com/member/2026-10-14-8cf5132b-9712-40ad-88d0-9bbdcf699698.jpg" alt="رفاه محمد الطاهي في يوم تخرجها"><figcaption>رفاه… خريجة التخدير والإنعاش</figcaption></figure><figure class="credit-photo"><img src="https://cdn.phototourl.com/member/2026-10-14-e974b681-8ecf-4f89-8d9a-b176d29e7fe9.jpg" alt="المعهد الذي درست فيه رفاه"><figcaption>حيث بدأ الحلم</figcaption></figure><figure class="credit-photo"><img src="https://images.pexels.com/photos/8093032/pexels-photo-8093032.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="صورة رمزية لاحتفال الخريجين وقبعاتهم" width="1200" height="627"><figcaption>وللفرح، سماءٌ أوسع</figcaption></figure><figure class="credit-photo"><img class="portrait" src="https://cdn.phototourl.com/member/2026-10-14-c8a81b0f-ff6e-49e9-b3ea-679e09121ca3.png" alt="درع تخرج رفاه محمد الطاهي"><figcaption>ثمرةُ سنواتٍ من الإصرار</figcaption></figure><p class="gallery-note">صور رفاه وجامعتها حقيقية، وصورة الحفل رمزية.</p></div>
           <div class="credit-block"><p class="eyebrow">ثمرة الرحلة</p><h3 class="credit-title">لحظة تستحق أن تُحفظ</h3><div class="credit-certificate"><img data-certificate alt="شهادة تخرج رفاه محمد الطاهي" hidden><div class="credit-certificate-pending" id="creditsCertificatePending"><div class="plaque small" aria-hidden="true"><span class="plaque-hook"></span><div class="plaque-plate"><p class="pl-1">إدارة</p><p class="pl-2">المعهد التقاني الطبي</p><p class="pl-3">تتشرف بتقديم درع تهنئة للخريجة</p><div class="pl-orn">❦ ━━ ✦ ━━ ❦</div><p class="pl-name">رفاه محمد الطاهي</p><div class="pl-orn">❦ ━━ ✦ ━━ ❦</div><p class="pl-dept">قسم التخدير</p><p class="pl-4">متمنين لها دوام التوفيق والنجاح</p><p class="pl-year">2025 - 2026</p></div><span class="plaque-clasp"></span></div><p>درع تكريم الخريجة رفاه محمد الطاهي</p></div></div></div>
           <div class="credit-block"><p class="eyebrow">رسالةٌ تمنح الأمل</p><h3 class="credit-title">تخدير وإنعاش</h3><p class="credit-copy"><span>علمٌ يسند الحياة،</span><span>وقلبٌ اختار أن يكون عوناً.</span><span>من حلمٍ على مقاعد الدراسة،</span><span>إلى حكاية جديدة في عالم الرعاية.</span></p></div>
           <div class="credit-block"><p class="credit-quote">كانت رحلة…<br>واليوم بدأت الحكاية الجديدة.</p><h3 class="credit-end-name">رفاه محمد الطاهي</h3><p class="credit-specialty">تخدير وإنعاش 🎓</p><p class="credit-copy">مبارك التخرج،<br>ومنها إلى أعلى المراتب والنجاحات 🤍</p><div class="ornament" aria-hidden="true"><svg class="icon"><use href="#i-sparkle"/></svg></div></div>
@@ -813,6 +815,7 @@
       const CERTIFICATE_SRC = 'https://cdn.phototourl.com/member/2026-10-14-198640b5-ea2d-4c56-b370-ec9380ef3793.jpg';
       const CERTIFICATE_SRC_2 = 'https://cdn.phototourl.com/member/2026-10-14-c8a81b0f-ff6e-49e9-b3ea-679e09121ca3.png';
       const VIDEO_ID = 'D406SxNJGBg';
+      document.querySelectorAll('#galleryGrid [data-photo]').forEach((button, index) => { button.dataset.photo = String(index); });
       const photos = Array.from(document.querySelectorAll('#galleryGrid .gallery-item')).map((figure) => ({
         src: figure.querySelector('img').src,
         alt: figure.querySelector('img').alt,
@@ -1447,12 +1450,55 @@
       }
 
       // ===== Guestbook (saved on this device) =====
+      // Paste the Firebase Realtime Database URL here to share wishes with every visitor, e.g.
+      // 'https://rafah-graduation-default-rtdb.firebaseio.com'
+      const DB_URL = 'https://alrfah-c6a34-default-rtdb.firebaseio.com';
       const GB_KEY = 'rafah-guestbook-v1';
+      const dbBase = DB_URL.trim().replace(/\/+$/, '');
+      const sharedBook = /^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebaseio\.com|firebasedatabase\.app)$/i.test(dbBase);
+      let wishesCache = [];
+      let wishesLoading = false;
       function readWishes() { try { return JSON.parse(localStorage.getItem(GB_KEY)) || []; } catch { return []; } }
+      function validWish(w) { return w && typeof w.name === 'string' && typeof w.message === 'string' && w.name.trim() && w.message.trim(); }
+      function setGbMode(text) { $('gbMode').textContent = text; }
+      async function loadWishes() {
+        if (!sharedBook) {
+          wishesCache = readWishes().filter(validWish);
+          setGbMode('ملاحظة: دفتر التهاني يعمل حالياً على هذا الجهاز فقط إلى حين ربطه بقاعدة البيانات.');
+          renderWishes();
+          return;
+        }
+        if (wishesLoading) return;
+        wishesLoading = true;
+        try {
+          const response = await fetch(`${dbBase}/wishes.json?orderBy=%22at%22&limitToLast=300`, { cache: 'no-store' });
+          if (!response.ok) throw new Error(String(response.status));
+          const data = (await response.json()) || {};
+          wishesCache = Object.values(data).filter(validWish).sort((a, b) => Number(a.at) - Number(b.at));
+          setGbMode('');
+          renderWishes();
+        } catch {
+          if (!wishesCache.length) setGbMode('تعذّر تحميل التهاني الآن. تحققوا من الاتصال بالإنترنت.');
+        } finally { wishesLoading = false; }
+      }
+      async function saveWish(name, message) {
+        if (!sharedBook) {
+          const list = readWishes();
+          list.push({ name, message, at: new Date().toISOString() });
+          localStorage.setItem(GB_KEY, JSON.stringify(list.slice(-60)));
+          return;
+        }
+        const response = await fetch(`${dbBase}/wishes.json`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, message, at: { '.sv': 'timestamp' } })
+        });
+        if (!response.ok) throw new Error(String(response.status));
+      }
       function renderWishes() {
         const wall = $('gbWall');
         wall.replaceChildren();
-        const list = readWishes();
+        const list = wishesCache;
         if (!list.length) {
           const note = document.createElement('p');
           note.className = 'gb-note';
@@ -1486,27 +1532,42 @@
         $('gbOpen').focus();
       });
       $('gbMsg').addEventListener('input', () => { $('gbCount').textContent = `${formatNumber($('gbMsg').value.length)} / ${formatNumber(280)}`; });
-      $('gbForm').addEventListener('submit', (event) => {
+      $('gbForm').addEventListener('submit', async (event) => {
         event.preventDefault();
         const name = $('gbName').value.trim();
         const message = $('gbMsg').value.trim();
         if (!name) { $('gbError').textContent = 'اكتبوا اسمكم من فضلكم.'; $('gbName').focus(); return; }
         if (message.length < 2) { $('gbError').textContent = 'اكتبوا رسالة التهنئة.'; $('gbMsg').focus(); return; }
-        const list = readWishes();
-        list.push({ name: name.slice(0, 40), message: message.slice(0, 280), at: new Date().toISOString() });
-        try { localStorage.setItem(GB_KEY, JSON.stringify(list.slice(-60))); }
-        catch { $('gbError').textContent = 'تعذّر حفظ التهنئة على هذا الجهاز.'; return; }
+        const submitButton = $('gbForm').querySelector('button[type="submit"]');
+        if (submitButton.disabled) return;
+        submitButton.disabled = true;
+        const originalLabel = submitButton.textContent;
+        submitButton.textContent = 'جارٍ الإرسال…';
+        try { await saveWish(name.slice(0, 40), message.slice(0, 280)); }
+        catch {
+          $('gbError').textContent = 'تعذّر إرسال التهنئة. تحققوا من الاتصال ثم حاولوا مجدداً.';
+          submitButton.disabled = false;
+          submitButton.textContent = originalLabel;
+          return;
+        }
+        submitButton.disabled = false;
+        submitButton.textContent = originalLabel;
+        await loadWishes();
         $('gbError').textContent = '';
         $('gbForm').reset();
         $('gbCount').textContent = `${formatNumber(0)} / ${formatNumber(280)}`;
         $('gbForm').hidden = true;
         $('gbOpen').setAttribute('aria-expanded', 'false');
-        renderWishes();
         const r = $('gbWall').getBoundingClientRect();
         celebration.burstAt(window.innerWidth / 2, Math.min(window.innerHeight * .8, Math.max(80, r.top + 40)), 30);
         notify('وصلت تهنئتكم لرفاه 🤍');
       });
-      renderWishes();
+      loadWishes();
+      if (sharedBook) {
+        // Refresh so new wishes from other visitors appear without reloading.
+        setInterval(() => { if (!document.hidden) loadWishes(); }, 20000);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) loadWishes(); });
+      }
 
       // ===== Direct share links =====
       const shareUrl = location.href.split('#')[0];
