@@ -17,6 +17,8 @@
        databaseURL هو المهم. بقية الحقول اختيارية، الصقيها إن وُجدت.
        ====================================================================== -->
   <script>
+    // رابط ملف الأغنية (mp3) من Firebase Storage. اتركيه فارغاً فيُستخدم يوتيوب.
+    window.RAFAH_SONG_URL = "";
     window.RAFAH_FIREBASE_CONFIG = {
       databaseURL: "https://alrfah-c6a34-default-rtdb.firebaseio.com",
       projectId: "alrfah-c6a34",
@@ -578,8 +580,8 @@
     <div class="ic-glow" aria-hidden="true"></div>
     <svg class="ic-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><use href="#i-cap"/></svg>
     <p class="ic-text">استعدوا لمشاركة فرحتي...</p>
-    <button class="ic-start" id="icStart" type="button">🎓 ابدؤوا العدّ</button>
-    <p class="ic-hint" id="icHint">اضغطوا في أي مكان لبدء العدّ مع الصوت 🔔</p>
+    <button class="ic-start" id="icStart" type="button">🎓 ابدأ العدّ</button>
+    <p class="ic-hint" id="icHint" hidden></p>
     <div class="ic-number" id="icNumber" aria-live="assertive">3</div>
     <svg class="ic-ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><circle class="ic-ring-fill" id="icRing" cx="60" cy="60" r="54"/></svg>
     <button class="ic-skip" id="icSkip" type="button">تخطّي</button>
@@ -1244,6 +1246,34 @@
       // Audio-only control: the visitor sees one song button, not a video panel.
       let apiPromise = null, player = null, playerReady = false, playerFailed = false;
       let playing = false, wantsPlayback = false, playerSession = 0, playerCreating = false;
+
+      // ===== Fast path: direct audio file hosted on Firebase Storage =====
+      const SONG_URL = (window.RAFAH_SONG_URL || '').trim();
+      const useDirectAudio = Boolean(SONG_URL);
+      let song = null, songFailed = false;
+      if (useDirectAudio) {
+        song = new Audio();
+        song.preload = 'auto';
+        song.loop = true;
+        song.volume = .75;
+        song.crossOrigin = 'anonymous';
+        song.setAttribute('playsinline', '');
+        song.src = SONG_URL;
+        song.addEventListener('playing', () => { playing = true; wantsPlayback = true; syncSongUI(); });
+        song.addEventListener('pause', () => { playing = false; syncSongUI(); });
+        song.addEventListener('error', () => {
+          songFailed = true; playing = false; syncSongUI();
+          notify('تعذّر تحميل ملف الأغنية. تحققوا من رابط Firebase Storage وقواعد الوصول.');
+        });
+        song.load();
+      }
+      function playDirect(auto) {
+        if (songFailed || !song) return;
+        wantsPlayback = true;
+        const attempt = song.play();
+        if (attempt && attempt.catch) attempt.catch(() => { playing = false; syncSongUI(); if (!auto) notify('اضغطوا زر تشغيل الأغنية مرة أخرى.'); });
+      }
+      function pauseDirect() { if (song) song.pause(); }
       function loadYouTubeAPI() {
         if (window.YT && window.YT.Player) return Promise.resolve();
         if (apiPromise) return apiPromise;
@@ -1270,6 +1300,7 @@
       }
       function startSong(auto = false) {
         wantsPlayback = true;
+        if (useDirectAudio) { playDirect(auto); return; }
         if (playerFailed) {
           if (!auto) notify('تعذّر تشغيل الأغنية داخل الموقع.');
           return;
@@ -1288,6 +1319,7 @@
       }
       function pauseSong() {
         wantsPlayback = false;
+        if (useDirectAudio) { pauseDirect(); playing = false; syncSongUI(); return; }
         if (player && playerReady) { try { player.pauseVideo(); } catch {} }
         playing = false;
         syncSongUI();
@@ -1300,6 +1332,7 @@
         notify(code === 153 ? 'يلزم فتح الموقع عبر استضافة ويب لتعمل الأغنية.' : 'تعذّر تشغيل الأغنية داخل الموقع.');
       }
       async function mountPlayer() {
+        if (useDirectAudio) return;
         if (player || playerCreating) return;
         playerCreating = true;
         const session = ++playerSession;
@@ -1439,6 +1472,7 @@
         const ctx = chimeContext();
         if (ctx && ctx.state === 'suspended') ctx.resume();
         if (typeof mountPlayer === 'function') mountPlayer();
+        if (typeof song !== 'undefined' && song) { try { song.load(); } catch {} }
         $('introCountdown').classList.add('counting');
         $('icHint').textContent = '';
         const ring = $('icRing');
@@ -1834,7 +1868,9 @@
       // Fallback: if the player was still loading at the click, start on the next touch/click.
       ['pointerdown', 'touchend', 'keydown'].forEach((type) => document.addEventListener(type, (event) => {
         if (event.target.closest && event.target.closest('#musicButton')) return;
-        if (wantsPlayback && !playing && player && playerReady && !playerFailed) {
+        if (!wantsPlayback || playing) return;
+        if (useDirectAudio) { if (!songFailed) playDirect(true); return; }
+        if (player && playerReady && !playerFailed) {
           try { player.playVideo(); } catch {}
         }
       }, { passive: true }));
